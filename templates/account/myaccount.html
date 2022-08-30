@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<style>
+	.active {
+		color: #7fad39;
+		font-weight: bold;
+	}
+
+	.row{
+		margin: 20px 0;
+	}
+
+	button {
+		border: none;
+		background-color: transparent;
+		margin: 5px 0;
+		transition: .3s ease-out;
+		border-radius: 4px;
+	}
+
+	button:hover {
+		color: #7fad39;
+		font-weight: bold;
+		padding-left: 40px;
+	}
+
+	.sidebar {
+		border-radius: 10px;
+		border: #77777738 solid 1px;
+	}
+	#content {
+		border-radius: 10px;
+		border: #77777738 solid 1px;
+
+	}
+</style>
+<div class="container">
+	<h2 >My account</h2>
+	<div class="row align-items-center">
+		<div class="col-md-3">
+			<div class="sidebar">
+				<div class="d-flex flex-column mb-3">
+					<button data-section="account" class="p-2 active">Mon compte</button>
+					<button data-section="" class="p-2">Mes commandes</button>
+					<button data-section="" class="p-2">Mes produits téléchargeables</button>
+					<button data-section="" class="p-2">Ma liste d’envies</button>
+					<button data-section="" class="p-2">Carnet d’adresses</button>
+					<button data-section="" class="p-2">Informations du compte</button>
+					<button data-section="" class="p-2">Mes avis produit</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div id="content">
+		
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	function showApp(section) {   
+    fetch(`/user/${section}/`)
+    .then(response => response.text())
+    .then(text => {
+        document.querySelector('#content').innerHTML = text;
+    })
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    showApp('account')
+    document.querySelectorAll('button').forEach(button => {
+        button.onclick = function() {
+            showApp(this.dataset.section)
+        }
+    })
+})
+</script>
+{% endblock content %}
